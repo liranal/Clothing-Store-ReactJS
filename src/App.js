@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Header from "./components/header/header.component";
 import HomePage from "./pages/homepage/homepage.component";
@@ -9,7 +9,7 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.action";
 function App() {
-  const currrentUser = useSelector((state) => state.user.currrentUser);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,13 +30,20 @@ function App() {
       unsubscribefromAuth();
     };
   }, [dispatch]);
+  console.log(currentUser);
   return (
     <div>
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/shop" component={ShopPage} />
-        <Route path="/signin" component={SignInAndSignUpPage} />
+        <Route
+          exact
+          path="/signin"
+          render={() =>
+            currentUser ? <Redirect to="/" /> : <SignInAndSignUpPage />
+          }
+        />
       </Switch>
     </div>
   );
