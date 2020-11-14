@@ -21,6 +21,7 @@ function SignUp() {
         email,
         password
       );
+      console.log(displayName);
       await createUserProfileDocument(user, { displayName });
       setEmail("");
       setConfirmPassword("");
